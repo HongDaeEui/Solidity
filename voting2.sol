@@ -53,5 +53,11 @@ contract Vote {
             }
         }
     }
+    
+        function destroy() public {
+        selfdestruct(payable(msg.sender));
+    }
+    
 }
+
 
