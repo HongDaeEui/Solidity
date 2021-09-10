@@ -9,6 +9,8 @@ contract TreeItems is ERC1155 {
     
     mapping(address => uint) public balances;
     mapping(address => uint) public drawcode;
+     // Optional mapping for token URIs
+    mapping(uint256 => string) internal tokenURIs;
     address public owner;
 
     uint256 public constant Baby = 0;
@@ -21,7 +23,7 @@ contract TreeItems is ERC1155 {
     uint256 public constant Draw_Ticket = 7;
     
     
-        constructor() public ERC1155("https://raw.githubusercontent.com/JaeseungJung/Sol/main/toy/Tree-Item/{id}.json") {
+        constructor() public ERC1155("https://raw.githubusercontent.com/HongDaeEui/SolidityProject/main/nft/{id}.json") {
         owner = msg.sender; 
         
         _mint(msg.sender, Baby, 10**15, "");
@@ -33,14 +35,22 @@ contract TreeItems is ERC1155 {
         _mint(msg.sender, Diamond, 10**3, "");
         
         _mint(msg.sender, Draw_Ticket, 10**18, "");
+        
+        
 
-}
+        _setTokenURI(0, "https://raw.githubusercontent.com/HongDaeEui/SolidityProject/main/nft/0000000000000000000000000000000000000000000000000000000000000000.json");
+        _setTokenURI(1, "https://raw.githubusercontent.com/HongDaeEui/SolidityProject/main/nft/0000000000000000000000000000000000000000000000000000000000000001.json");
+        _setTokenURI(2, "https://raw.githubusercontent.com/HongDaeEui/SolidityProject/main/nft/0000000000000000000000000000000000000000000000000000000000000002.json");
+        _setTokenURI(3, "https://raw.githubusercontent.com/HongDaeEui/SolidityProject/main/nft/0000000000000000000000000000000000000000000000000000000000000003.json");
+        _setTokenURI(4, "https://raw.githubusercontent.com/HongDaeEui/SolidityProject/main/nft/0000000000000000000000000000000000000000000000000000000000000004.json");
+        _setTokenURI(5, "https://raw.githubusercontent.com/HongDaeEui/SolidityProject/main/nft/0000000000000000000000000000000000000000000000000000000000000005.json");
+        _setTokenURI(6, "https://raw.githubusercontent.com/HongDaeEui/SolidityProject/main/nft/0000000000000000000000000000000000000000000000000000000000000006.json");
+        }
     
     
         modifier onlyOwner () {
         require(msg.sender == owner);
-        _;
-}
+        _;}
 
 
 
@@ -86,7 +96,7 @@ contract TreeItems is ERC1155 {
         }
         
         
-        if( balances[msg.sender] % 5*10**17 == 0) {
+        if( balances[msg.sender] % (5*(10**17)) == 0) {
             
             uint drawNumber;
             drawNumber = balances[msg.sender]/(5*(10**17)) - drawcode[msg.sender];
@@ -95,6 +105,16 @@ contract TreeItems is ERC1155 {
         }
      }
      
+     
+     
+       /**
+       * @param _tokenId uint256 ID of the token to set its URI
+       * @param _uri string URI to assign
+       */
+      function _setTokenURI(uint256 _tokenId, string memory _uri) internal {
+        tokenURIs[_tokenId] = _uri;
+      }
+
      
         
       function merge_cards(uint fromID, uint toID) public  {
@@ -112,8 +132,14 @@ contract TreeItems is ERC1155 {
     return balances[_who];
 }
 
-
-
-      receive() external payable {}
+    function mint(address account, uint256 id, uint256 amount, bytes memory data) public {
+        _mint( account, id, amount, data);
+    }
+    
+    function burn(address account, uint256 id, uint256 amount) public {
+         _burn( account, id, amount );
+    }
+    
+     receive() external payable {}
 
 }
