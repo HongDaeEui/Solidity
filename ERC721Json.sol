@@ -1,10 +1,11 @@
+
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
     import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
-    import '@openzeppelin/contracts/access/Ownable.sol';
+    import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
-    contract Artist is ERC721, Ownable {
+    contract Artist is ERC721, ERC721Enumerable {
         
         using Strings for uint256;
         
@@ -13,13 +14,28 @@ pragma solidity ^0.8.0;
 
         // Base URI
         string private _baseURIextended;
-
+        
+        // owner
+        mapping(address => uint) public isAdmin;
+        address public owner;
+        
 
         constructor(string memory _name, string memory _symbol)
             ERC721(_name, _symbol)
-        {}
+        {
+            owner = msg.sender;
+             isAdmin[0x2BF5A2f4E77Ced2F6456d1b839b8e46E0E8e34E2] = 1;
+        isAdmin[0x6D35014e8458704752D61e0e570C0A54b7f17676] = 1;
+        isAdmin[0xA0e94126F66850704f446A173DeAF4af3061c068] = 1;
+        isAdmin[0x15B21E6b74c88AC8cA39F9e3Ad4B2ff5Faccc513] = 1;
+        }
         
-        function setBaseURI(string memory baseURI_) external onlyOwner() {
+        modifier onlyAdmin () {
+        require(isAdmin[msg.sender] == 1);
+        _;
+}
+        
+        function setBaseURI(string memory baseURI_) external onlyAdmin() {
             _baseURIextended = baseURI_;
         }
         
@@ -50,13 +66,37 @@ pragma solidity ^0.8.0;
             return string(abi.encodePacked(base, tokenId.toString()));
         }
         
+        function _beforeTokenTransfer(address from, address to, uint256 tokenId) internal override(ERC721, ERC721Enumerable) {
+         super._beforeTokenTransfer(from, to, tokenId);
+        }
+
+        function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
+         return super.supportsInterface(interfaceId);
+        }
+              
 
         function mint(
             address _to,
             uint256 _tokenId,
             string memory tokenURI_
-        ) external onlyOwner() {
+        ) external onlyAdmin() {
             _mint(_to, _tokenId);
             _setTokenURI(_tokenId, tokenURI_);
         }
+        
+        
+        function transArt(uint _tokenId) public {
+            _transfer(owner, msg.sender, _tokenId);
+        }
+        
+        
+        function tokenOfAll(address account) public view virtual returns(uint[] memory) {
+            uint tokenCount = balanceOf(account);
+            uint[] memory allTokens = new uint[](tokenCount);
+            for(uint256 i=0; i < tokenCount; ++i) {
+            allTokens[i] = tokenOfOwnerByIndex(account, i);
+            }
+            return allTokens;
+        }
+    
     }
