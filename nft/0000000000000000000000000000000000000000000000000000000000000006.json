@@ -1,6 +1,7 @@
 {
-  "description": "Diamond",
+  "description": "Diamond minted by Nextree",
   "external_url": "https://testnets.opensea.io/3",
-  "image": "https://www.dailysecu.com/news/photo/202104/123449_145665_1147.png",
+  "image": "https://raw.githubusercontent.com/JaeseungJung/Sol/main/toy/Tree-Item/svg/diamond.svg",
+
   "name": "Diamond"
 }

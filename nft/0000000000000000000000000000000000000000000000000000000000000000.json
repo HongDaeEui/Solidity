@@ -1,6 +1,7 @@
 {
   "description": "Baby",
   "external_url": "https://testnets.opensea.io/3",
-  "image": "http://s3.ap-northeast-2.amazonaws.com/whitecotton/images/godo/goods/19/07/28/1000004275/1000004275_main_082.jpg",
+  "image": "https://raw.githubusercontent.com/JaeseungJung/Sol/main/toy/Tree-Item/svg/baby.svg",
   "name": "Baby"
+  
 }

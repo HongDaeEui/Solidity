@@ -1,6 +1,7 @@
 {
   "description": "Platinum",
   "external_url": "https://testnets.opensea.io/3",
-  "image": "https://blog.hmgjournal.com/images_n/contents/170421_dog01.png",
+  "image": "https://raw.githubusercontent.com/JaeseungJung/Sol/main/toy/Tree-Item/svg/platinum.svg",
+
   "name": "Platinum"
 }
